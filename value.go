@@ -10,10 +10,17 @@ package util
 
 import (
 	"encoding/binary"
+	"github.com/mohae/deepcopy"
 	"strconv"
 	"strings"
 )
 
+// DeepCopy 深拷贝
+func DeepCopy(src interface{}) interface{} {
+	return deepcopy.Copy(src)
+}
+
+// GetInt64FromMapByDimKey 通过Key中的关键字从Map中获取Int64值
 func GetInt64FromMapByDimKey(data map[string]interface{}, dimKey string) int64 {
 	for k, v := range data {
 		if strings.Contains(k, dimKey) {
@@ -23,6 +30,7 @@ func GetInt64FromMapByDimKey(data map[string]interface{}, dimKey string) int64 {
 	return 0
 }
 
+// GetIntFromMapByDimKey 通过Key中的关键字从Map中获取Int值
 func GetIntFromMapByDimKey(data map[string]interface{}, dimKey string) int {
 	for k, v := range data {
 		if strings.Contains(k, dimKey) {
@@ -32,6 +40,7 @@ func GetIntFromMapByDimKey(data map[string]interface{}, dimKey string) int {
 	return 0
 }
 
+// GetFloatFromMapByDimKey 通过Key中的关键字从Map中获取Float64值
 func GetFloatFromMapByDimKey(data map[string]interface{}, dimKey string) float64 {
 	for k, v := range data {
 		if strings.Contains(k, dimKey) {
@@ -41,6 +50,7 @@ func GetFloatFromMapByDimKey(data map[string]interface{}, dimKey string) float64
 	return 0
 }
 
+// GetStringFromMapByDimKey 通过Key中的关键字从Map中获取String值
 func GetStringFromMapByDimKey(data map[string]interface{}, dimKey string) string {
 	for k, v := range data {
 		if strings.Contains(k, dimKey) {
@@ -50,6 +60,7 @@ func GetStringFromMapByDimKey(data map[string]interface{}, dimKey string) string
 	return ""
 }
 
+// GetIntFromMap 通过多个Key从Map中获取Int值
 func GetIntFromMap(data map[string]interface{}, key string, otherKeys ...string) int {
 
 	keys := []string{key}
@@ -66,6 +77,7 @@ func GetIntFromMap(data map[string]interface{}, key string, otherKeys ...string)
 	return 0
 }
 
+// GetInt64FromMap 通过多个Key从Map中获取Int64值
 func GetInt64FromMap(data map[string]interface{}, key string, otherKeys ...string) int64 {
 
 	keys := []string{key}
@@ -83,6 +95,7 @@ func GetInt64FromMap(data map[string]interface{}, key string, otherKeys ...strin
 	return 0
 }
 
+// GetFloatFromMap 通过多个Key从Map中获取Float64值
 func GetFloatFromMap(data map[string]interface{}, key string, otherKeys ...string) float64 {
 
 	keys := []string{key}
@@ -98,6 +111,7 @@ func GetFloatFromMap(data map[string]interface{}, key string, otherKeys ...strin
 	return 0.0
 }
 
+// GetStringFromMap 通过多个Key从Map中获取String值
 func GetStringFromMap(data map[string]interface{}, key string, otherKeys ...string) string {
 
 	keys := []string{key}
@@ -113,6 +127,7 @@ func GetStringFromMap(data map[string]interface{}, key string, otherKeys ...stri
 	return ""
 }
 
+// GetIMapFromMap 通过多个Key从Map中获取Map值
 func GetIMapFromMap(data map[string]interface{}, key string, otherKeys ...string) map[string]interface{} {
 
 	keys := []string{key}
@@ -128,6 +143,7 @@ func GetIMapFromMap(data map[string]interface{}, key string, otherKeys ...string
 	return make(map[string]interface{})
 }
 
+// GetISliceFromMap 通过多个Key从Map中获取Slice值
 func GetISliceFromMap(data map[string]interface{}, key string, otherKeys ...string) []interface{} {
 
 	keys := []string{key}
@@ -144,6 +160,7 @@ func GetISliceFromMap(data map[string]interface{}, key string, otherKeys ...stri
 	return make([]interface{}, 0)
 }
 
+// GetIntFromSlice 通过索引从切片中获取Int值
 func GetIntFromSlice(data []interface{}, index int) int {
 	if index >= len(data) {
 		return 0
@@ -151,6 +168,7 @@ func GetIntFromSlice(data []interface{}, index int) int {
 	return GetIntFromV(data[index])
 }
 
+// GetInt64FromSlice 通过索引从切片中获取Int64值
 func GetInt64FromSlice(data []interface{}, index int) int64 {
 	if index >= len(data) {
 		return 0
@@ -158,6 +176,7 @@ func GetInt64FromSlice(data []interface{}, index int) int64 {
 	return GetInt64FromV(data[index])
 }
 
+// GetFloatFromSlice 通过索引从切片中获取Float64值
 func GetFloatFromSlice(data []interface{}, index int) float64 {
 	if index >= len(data) {
 		return 0.0
@@ -165,6 +184,7 @@ func GetFloatFromSlice(data []interface{}, index int) float64 {
 	return GetFloatFromV(data[index])
 }
 
+// GetStringFromSlice 通过索引从切片中获取String值
 func GetStringFromSlice(data []interface{}, index int) string {
 	if index >= len(data) {
 		return ""
@@ -172,6 +192,7 @@ func GetStringFromSlice(data []interface{}, index int) string {
 	return GetStringFromV(data[index])
 }
 
+// GetIntFromV 从任意类型获取Int值
 func GetIntFromV(v interface{}) int {
 
 	switch value := v.(type) {
@@ -201,6 +222,7 @@ func GetIntFromV(v interface{}) int {
 	}
 }
 
+// GetInt64FromV 从任意类型获取Int64值
 func GetInt64FromV(v interface{}) int64 {
 
 	switch value := v.(type) {
@@ -230,10 +252,11 @@ func GetInt64FromV(v interface{}) int64 {
 	}
 }
 
+// GetFloatFromV 从任意类型获取Float64值
 func GetFloatFromV(v interface{}) float64 {
 	switch value := v.(type) {
 	case int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64:
-		return float64(intValue(value))
+		return float64(int64Value(value))
 	case float32:
 		return float64(value)
 	case float64:
@@ -269,10 +292,11 @@ func GetFloatFromV(v interface{}) float64 {
 	}
 }
 
+// GetStringFromV 从任意类型获取String值
 func GetStringFromV(v interface{}) string {
 	switch value := v.(type) {
 	case int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64:
-		return strconv.Itoa(intValue(value))
+		return strconv.FormatInt(int64Value(value), 10)
 	case float32:
 		return strconv.FormatFloat(float64(value), 'f', -1, 32)
 	case float64:
@@ -290,6 +314,7 @@ func GetStringFromV(v interface{}) string {
 	}
 }
 
+// GetIMapFromV 从任意类型获取Map值
 func GetIMapFromV(v interface{}) map[string]interface{} {
 	m, ok := v.(map[string]interface{})
 	if ok {
@@ -298,6 +323,7 @@ func GetIMapFromV(v interface{}) map[string]interface{} {
 	return make(map[string]interface{})
 }
 
+// GetISliceFromV 从任意类型获取Slice值
 func GetISliceFromV(v interface{}) []interface{} {
 	s, ok := v.([]interface{})
 	if ok {
@@ -306,6 +332,7 @@ func GetISliceFromV(v interface{}) []interface{} {
 	return make([]interface{}, 0)
 }
 
+// 从任意类型获取Int值
 func intValue(value interface{}) int {
 	switch v := value.(type) {
 	case int:
@@ -332,6 +359,7 @@ func intValue(value interface{}) int {
 	return 0
 }
 
+// 从任意类型获取Int64值
 func int64Value(value interface{}) int64 {
 	switch v := value.(type) {
 	case int:
