@@ -7,7 +7,10 @@
 
 package util
 
-import "testing"
+import (
+	"testing"
+	"unsafe"
+)
 
 func TestAll(t *testing.T) {
 
@@ -17,5 +20,13 @@ func TestAll(t *testing.T) {
 
 	i1 := GetIntFromV(s)
 	t.Log(i1)
+
+	ss := []string{"1", "2", "3"}
+
+	m := SliceToMap(ss, func(s string) interface{} {
+		return struct{}{}
+	})
+	t.Log(m)
+	t.Log(unsafe.Sizeof(""))
 
 }
